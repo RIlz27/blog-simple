@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+{{-- 
     <div class="py-6 flex justify-center">
         <div class="max-w-2x1 w-full">
             @if ($post->image)
@@ -14,4 +12,4 @@
             <p class="text-gray-500 text-center mt-10 ">copyright @RilzyBlogs</p>
         </div>
     </div>
-@endsection
+ --}}

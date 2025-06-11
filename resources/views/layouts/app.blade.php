@@ -1,16 +1,16 @@
+<!-- resources/views/layouts/app.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Blog </title>
+    <title>My Blog</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    @livewireStyles
 </head>
 
 <body class="bg-gray-100 text-gray-800">
-
     <!-- Navbar -->
     <nav class="bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -24,9 +24,9 @@
 
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto mt-8 px-4">
-        @yield('content')
+        {{ $slot }} 
     </main>
 
+    @livewireScripts
 </body>
-
 </html>

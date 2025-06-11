@@ -1,6 +1,4 @@
-@extends('layouts.app')
 
-@section('content')
     <div class="max-w-2xl mx-auto py-10 px-6 bg-white rounded shadow">
         <h1 class="text-2xl font-bold mb-6 text-center">Edit Postingan</h1>
         <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
@@ -35,4 +33,4 @@
             </div>
         </form>
     </div>
-@endsection
+
