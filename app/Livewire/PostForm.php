@@ -8,10 +8,12 @@ use Livewire\Attributes\Layout;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Post;
+use App\Models\Image;
 
 #[Layout('layouts.app')]
 class PostForm extends Component
 {
+    protected $listeners = ['imageUploaded'];
     use WithFileUploads;
 
     public $title;
@@ -21,8 +23,8 @@ class PostForm extends Component
     public function save()
     {
         $data = [
-            'title' => $this->title,
             'image' => $this->image,
+            'title' => $this->title,
             'content' => $this->content,
         ];
 
@@ -39,18 +41,31 @@ class PostForm extends Component
 
         $validated = $validator->validate();
 
-        if ($this->image) {
-            $validated['image'] = $this->image->store('posts', 'public');
-        }
+        $post = Post::create([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'published_at' => now(),
+        ]);
 
-        $validated['published_at'] = now();
-        Post::create($validated);
+        if ($this->image) {
+            $imagePath = $this->image->store('posts', 'public');
+
+            $post->image()->create([
+                'path' => $imagePath
+            ]);
+        }
 
         session()->flash('success', 'Postingan telah diunggah');
         $this->reset(['title', 'content', 'image']);
 
-         return redirect()->route('posts.index');
+        return redirect()->route('posts.index');
     }
+
+    public function imageUploaded($path)
+    {
+        $this->image = $path;
+    }
+
 
     public function render()
     {

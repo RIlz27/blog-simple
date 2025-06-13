@@ -23,10 +23,8 @@
 
         <div class="mb-4">
             <label class="block font-bold mb-1">Gambar</label>
-            <input type="file" wire:model="image" class="w-full" />
-            @error('image')
-                <span class="text-sm text-red-600">{{ $message }}</span>
-            @enderror
+            <livewire:upload-image />
+            {{-- @livewire('upload-image') --}}
         </div>
 
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">

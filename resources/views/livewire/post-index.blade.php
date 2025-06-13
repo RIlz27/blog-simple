@@ -14,9 +14,14 @@
 
                 @foreach ($posts as $post)
                     <div class="bg-white rounded shadow overflow-hidden">
-                        @if ($post->image)
-                            <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
+                        @if (is_object($post->image))
+                            <img src="{{ asset('storage/' . $post->image->path) }}" alt="{{ $post->title }}"
                                 class="w-full h-64 object-cover">
+                        @elseif (is_string($post->image))
+                        <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
+                                class="w-full h-64 object-cover">
+                        @else
+                        <p style="margin-right: 20px">Gambar Error</p>
                         @endif
 
                         <div class="p-4">
@@ -42,6 +47,7 @@
             </div>
 
             <!-- Sidebar -->
+            
             <aside class="space-y-6">
                 <div class="bg-white rounded shadow p-4">
                     <h3 class="text-lg font-semibold mb-2">Recent Post</h3>
