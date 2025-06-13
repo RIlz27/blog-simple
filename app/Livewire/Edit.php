@@ -42,7 +42,7 @@ class Edit extends Component
 
         $this->post->save();
 
-        session()->flash('success', 'Post berhasil diperbarui!');
+        session()->flash('success', 'Postingan berhasil diperbarui!');
         
         return redirect()->route('posts.index');
     }

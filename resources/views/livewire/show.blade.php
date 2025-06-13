@@ -1,6 +1,7 @@
 <div class="py-6 flex justify-center">
     <div class="max-w-2xl w-full bg-white p-6 rounded shadow">
         @if ($post->image)
+        
             <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
                 class="w-full h-64 object-cover rounded mb-4">
         @endif

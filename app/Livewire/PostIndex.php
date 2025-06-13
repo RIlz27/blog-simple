@@ -13,7 +13,7 @@ class PostIndex extends Component
     public function delete($id)
     {
         Post::findOrFail($id)->delete();
-        session()->flash('message', 'Post berhasil dihapus.');
+        session()->flash('message', 'Postingan berhasil dihapus.');
     }
 
 

@@ -4,7 +4,7 @@
         <div class="mb-4 text-green-600">{{ session('success') }}</div>
     @endif
 
-    <form wire:submit.prevent="save">
+    <form wire:submit.prevent="save" enctype="multipart/form-data">
         <div class="mb-4">
             <label class="block font-bold mb-1">Judul</label>
             <input type="text" wire:model="title" class="w-full border px-3 py-2 rounded" />

@@ -40,7 +40,7 @@ class PostForm extends Component
         $validated = $validator->validate();
 
         if ($this->image) {
-            $validated['image'] = $this->image->store('post', 'public');
+            $validated['image'] = $this->image->store('posts', 'public');
         }
 
         $validated['published_at'] = now();
@@ -48,6 +48,8 @@ class PostForm extends Component
 
         session()->flash('success', 'Postingan telah diunggah');
         $this->reset(['title', 'content', 'image']);
+
+         return redirect()->route('posts.index');
     }
 
     public function render()
