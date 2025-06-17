@@ -18,10 +18,21 @@ class UploadImage extends Component
             'image' => 'image|max:2048',
         ]);
 
+        [$width, $height] = getimagesize($this->image->getRealPath());
+        $ratio = round($width / $height, 2);
+
+        if ($ratio !== round(3 / 2, 2)) {
+            $this->reset('image');
+            session()->flash('error', 'Gambar harus memiliki rasio 3:2.');
+            return;
+        }
+
         $this->path = $this->image->store('posts', 'public');
-        $this->emit('imageUploaded', $this->path);
+
+       
         $this->dispatch('imageUploaded', path: $this->path);
-        session()->flash('success', 'Gambar berhasil diupload');
+
+        session()->flash('success', 'Gambar berhasil diunggah!');
     }
 
     public function render()
@@ -29,4 +40,3 @@ class UploadImage extends Component
         return view('livewire.upload-image');
     }
 }
-

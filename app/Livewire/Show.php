@@ -11,6 +11,13 @@ class Show extends Component
 {
     public Post $post;
 
+    public function delete($id)
+    {
+        Post::findOrFail($id)->delete();
+        session()->flash('message', 'Postingan berhasil dihapus.');
+        return redirect()->route('posts.index');
+    }
+
     public function mount($id)
     {
         $this->post = Post::findOrFail($id);

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Post;
 use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
+use App\Models\Category;
 
 #[Layout('layouts.app')]
 class Edit extends Component
@@ -16,12 +17,16 @@ class Edit extends Component
     public $title;
     public $content;
     public $image;
+    public $category_id;
+    public $existingImage;
 
-    public function mount($id)
+    public function mount(Post $post)
     {
-        $this->post = Post::findOrFail($id);
-        $this->title = $this->post->title;
-        $this->content = $this->post->content;
+        $this->post = $post;
+        $this->title = $post->title;
+        $this->content = $post->content;
+        $this->category_id = $post->category_id;
+        $this->existingImage = $post->image;
     }
 
     public function update()
@@ -43,12 +48,14 @@ class Edit extends Component
         $this->post->save();
 
         session()->flash('success', 'Postingan berhasil diperbarui!');
-        
+
         return redirect()->route('posts.index');
     }
 
     public function render()
     {
-        return view('livewire.edit');
+        return view('livewire.edit', [
+        'categories' => Category::all(),
+    ]);
     }
 }

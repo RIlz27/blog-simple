@@ -10,17 +10,10 @@ use Livewire\Attributes\Layout;
 class PostIndex extends Component
 {
 
-    public function delete($id)
-    {
-        Post::findOrFail($id)->delete();
-        session()->flash('message', 'Postingan berhasil dihapus.');
-    }
-
-
     public function render()
     {
         return view('livewire.post-index', [
-            'posts' => Post::latest()->get()
+            'posts' => Post::with('image')->latest()->get()
         ]);
     }
 }

@@ -2,73 +2,43 @@
 
 namespace App\Livewire;
 
-use App\Http\Requests\StorePostRequest;
 use Livewire\Component;
-use Livewire\Attributes\Layout;
-use Livewire\Features\SupportFileUploads\WithFileUploads;
-use Illuminate\Support\Facades\Validator;
+use Livewire\WithFileUploads;
 use App\Models\Post;
-use App\Models\Image;
-
-#[Layout('layouts.app')]
+use App\Models\Category;
 class PostForm extends Component
 {
-    protected $listeners = ['imageUploaded'];
     use WithFileUploads;
 
-    public $title;
-    public $image;
-    public $content;
+    public $title, $content, $image, $category_id;
 
     public function save()
     {
-        $data = [
-            'image' => $this->image,
+        $this->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required',
+            'image' => 'required|image|max:2048',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $imagePath = $this->image->store('posts', 'public');
+
+        Post::create([
             'title' => $this->title,
             'content' => $this->content,
-        ];
-
-        $validator = Validator::make($data, (new StorePostRequest())->rules());
-
-        if ($validator->fails()) {
-            foreach ($validator->errors()->messages() as $key => $messages) {
-                foreach ($messages as $message) {
-                    $this->addError($key, $message);
-                }
-            }
-            return;
-        }
-
-        $validated = $validator->validate();
-
-        $post = Post::create([
-            'title' => $validated['title'],
-            'content' => $validated['content'],
+            'image' => $imagePath,
+            'category_id' => $this->category_id,
             'published_at' => now(),
         ]);
 
-        if ($this->image) {
-            $imagePath = $this->image->store('posts', 'public');
-
-            $post->image()->create([
-                'path' => $imagePath
-            ]);
-        }
-
-        session()->flash('success', 'Postingan telah diunggah');
-        $this->reset(['title', 'content', 'image']);
-
+        session()->flash('success', 'Postingan berhasil dibuat!');
         return redirect()->route('posts.index');
     }
 
-    public function imageUploaded($path)
-    {
-        $this->image = $path;
-    }
-
-
     public function render()
     {
-        return view('livewire.post-form');
+        return view('livewire.post-form', [
+            'categories' => Category::all(),
+            ])->layout('layouts.app');
+        }
     }
-}
